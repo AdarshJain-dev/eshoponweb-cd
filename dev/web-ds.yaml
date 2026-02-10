@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: eshop-web
-          image: adarshjain428/eshopwebmvc:1.0
+          image: adarshjain428/eshopwebmvc:v1
           ports:
             - containerPort: 80
           env:

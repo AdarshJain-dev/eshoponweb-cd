@@ -21,6 +21,38 @@ spec:
           env:
             - name: ASPNETCORE_ENVIRONMENT
               value: "Development"
+            - name: ConnectionStrings__CatalogConnection
+              value: >
+                Server=$(DB_HOST),1433;
+                Database=$(DB_NAME);
+                User Id=$(DB_USER);
+                Password=$(DB_PASSWORD);
+                TrustServerCertificate=True;
+
+            - name: DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: eshop-db-config
+                  key: DB_HOST
+
+            - name: DB_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: eshop-db-config
+                  key: DB_NAME
+
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: eshop-db
+                  key: DB_USER
+
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: eshop-db
+                  key: DB_PASSWORD
+
 
 ---
 apiVersion: v1

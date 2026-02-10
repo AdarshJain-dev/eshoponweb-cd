@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: eshop-publicapi
+  namespace: dev
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: eshop-publicapi
+  template:
+    metadata:
+      labels:
+        app: eshop-publicapi
+    spec:
+      containers:
+        - name: eshop-publicapi
+          image: adarshjain428/eshoppublicapi:1.0
+          ports:
+            - containerPort: 80
+          env:
+            - name: DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: eshop-db-config
+                  key: DB_HOST
+            - name: DB_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: eshop-db-config
+                  key: DB_NAME
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: eshop-db
+                  key: DB_USER
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: eshop-db
+                  key: DB_PASSWORD
+
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: eshop-publicapi
+  namespace: dev
+spec:
+  selector:
+    app: eshop-publicapi
+  ports:
+    - port: 80
+      targetPort: 80
